@@ -1,0 +1,73 @@
+import { FC } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { getBlogData } from "@/lib/getBlogData";
+import { Blog } from "@/types/blog";
+import images from "@/images";
+import Head from "next/head";
+
+const AllBlogsPage: FC = () => {
+	const blogs: Blog[] = getBlogData();
+
+	return (
+		<>
+			{blogs.map((blog, index) => (
+				<>
+					<Head>
+						<title>{blog.meta[0]}</title>
+						<meta name="description" content={blog.meta[2]} />
+						<link rel="canonical" href={blog.meta[3]} />
+					</Head>
+					<div className="container mx-auto p-4">
+						<h1 className="text-4xl font-bold mb-4">All Blogs</h1>
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+							<div
+								key={index}
+								className="block p-4 border rounded hover:bg-gray-100"
+							>
+								<Link href={`/blog/${blog.title.toLowerCase()}`}>
+									<Image
+										src={images.blog[blog.image]}
+										alt={blog.title}
+										layout="responsive"
+										width={400}
+										height={200}
+									/>
+								</Link>
+
+								<h2 className="text-2xl font-semibold mt-2">
+									<Link href={`/blog/${blog.title.toLowerCase()}`}>
+										{blog.title}
+									</Link>
+								</h2>
+
+								<p className="text-gray-600">
+									<span>{blog.date}</span> | <span>{blog.readtime}</span>
+								</p>
+
+								<p className="categories mb-2">
+									{blog.categories.map((category, idx) => (
+										<Link
+											href={`/blog/category/${category.toLowerCase()}`}
+											key={idx}
+										>
+											{category}
+										</Link>
+									))}
+								</p>
+
+								<p className="mt-2">
+									<Link href={`/blog/${blog.title.toLowerCase()}`}>
+										{blog.desc}
+									</Link>
+								</p>
+							</div>
+						</div>
+					</div>
+				</>
+			))}
+		</>
+	);
+};
+
+export default AllBlogsPage;

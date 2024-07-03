@@ -1,8 +1,24 @@
-const PageLayout: React.FC = () => {
+import { Header, Footer, Template } from "@/components";
+
+interface LayoutProps {
+	children: React.ReactNode;
+	showHeader?: boolean;
+	showFooter?: boolean;
+}
+
+const PageLayout: React.FC<LayoutProps> = ({
+	children,
+	showHeader = false,
+	showFooter = false,
+}) => {
 	return (
-		<div className="">
-			<div className=""></div>
-		</div>
+		<>
+			{showHeader && <Header />}
+			<Template>
+				<main className="flex-grow">{children}</main>
+			</Template>
+			{showFooter && <Footer />}
+		</>
 	);
 };
 
